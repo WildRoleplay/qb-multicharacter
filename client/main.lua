@@ -67,8 +67,9 @@ AddEventHandler('qb-multicharacter:client:chooseChar', function()
     while not IsInteriorReady(interior) do
         Citizen.Wait(1000)
     end
-    FreezeEntityPosition(PlayerPedId(), true)
     SetEntityCoords(PlayerPedId(), Config.HiddenCoords.x, Config.HiddenCoords.y, Config.HiddenCoords.z)
+    FreezeEntityPosition(PlayerPedId(), true)
+    SetEntityInvincible(PlayerPedId(), true)
     Citizen.Wait(1500)
     ShutdownLoadingScreen()
     ShutdownLoadingScreenNui()
@@ -164,7 +165,9 @@ RegisterNUICallback('createNewCharacter', function(data)
     elseif cData.gender == "Female" then
         cData.gender = 1
     end
-
+    
+    DeleteEntity(charPed)
+    SetEntityInvincible(PlayerPedId(), false)
     TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
     Citizen.Wait(500)
 end)
